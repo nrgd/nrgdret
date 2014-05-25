@@ -254,7 +254,7 @@ namespace Anthrax
             {
                 XmlSerializer xs = new XmlSerializer(typeof(Settings));
 
-                using (StreamReader rd = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "\\Combats\\Priest.xml"))
+                using (StreamReader rd = new StreamReader(AppDomain.CurrentDomain.BaseDirectory + "\\Combats\\nrgdRET.xml"))
                 {
                     CCSettings = xs.Deserialize(rd) as Settings;
                 }
