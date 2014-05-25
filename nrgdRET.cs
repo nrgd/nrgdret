@@ -113,15 +113,24 @@ namespace Anthrax
         private void castNextSpellbySinglePriority(WowUnit TARGET)
         {
             // Vars
-            WowUnitAura inq = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First();
+            int inqTimeLeft;
+            if (ME.HasAuraById((int)Spells.Inquisition))
+            {
+                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft;
+            }
+            else
+            {
+                inqTimeLeft = 3;
+            }
             int hp = ME.GetPower(WowUnit.WowPowerType.HolyPower); // may change during execution, seems more efficient this way
 
-            if (inq.TimeLeft <= CCSettings.RefreshInquisition)
+            if (inqTimeLeft <= CCSettings.RefreshInquisition)
             {
-                if (hp > 2 || inq.TimeLeft <= CCSettings.ForceRefreshInquisition)
+                if (hp > 2 || inqTimeLeft <= CCSettings.ForceRefreshInquisition)
                 {
                     if (Spell.CanCast((int)Spells.Inquisition))
                     {
+                        Logger.WriteLine("Casting Inq");
                         ActionBar.ExecuteSpell((int)Spells.Inquisition);
                     }
                 }
@@ -161,12 +170,20 @@ namespace Anthrax
         private void castNextSpellbyAOEPriority(WowUnit TARGET)
         {
             // Vars
-            WowUnitAura inq = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First();
+            int inqTimeLeft;
+            if (ME.HasAuraById((int)Spells.Inquisition))
+            {
+                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft;
+            }
+            else
+            {
+                inqTimeLeft = 3;
+            }
             int hp = ME.GetPower(WowUnit.WowPowerType.HolyPower); // may change during execution, seems more efficient this way
 
-            if (inq.TimeLeft <= 4)
+            if (inqTimeLeft <= CCSettings.RefreshInquisition)
             {
-                if (hp > 2 || inq.TimeLeft <= 1)
+                if (hp > 2 || inqTimeLeft <= CCSettings.ForceRefreshInquisition)
                 {
                     if (Spell.CanCast((int)Spells.Inquisition))
                     {
@@ -174,7 +191,7 @@ namespace Anthrax
                     }
                 }
             }
-            if (ME.HasAuraById((int)Auras.T164PB) || ME.HasAuraById((int)Auras.DivinePurpose) || hp == 5)
+            if ((CCSettings.HasT164PB && ME.HasAuraById((int)Auras.T164PB)) || ME.HasAuraById((int)Auras.DivinePurpose) || hp == 5)
             {
                 ActionBar.ExecuteSpell((int)Spells.DivineStorm);
             }
@@ -213,8 +230,7 @@ namespace Anthrax
             {
                 Console.Beep(5000, 100);
                 isAOE = false;
-                while (Spell.CanCast((int)Spells.SealofTruth)) { }
-                ActionBar.ExecuteSpell((int)Spells.SealofTruth);
+                while (!ME.HasAuraById((int)Spells.SealofTruth)) { ActionBar.ExecuteSpell((int)Spells.SealofTruth); }
                 Logger.WriteLine("Rotation Single!!");
             }
             else
@@ -223,8 +239,7 @@ namespace Anthrax
                 Console.Beep(5000, 100);
                 Console.Beep(5000, 100);
                 isAOE = true;
-                while (Spell.CanCast((int)Spells.SealofRighteousness)) { }
-                ActionBar.ExecuteSpell((int)Spells.SealofRighteousness);
+                while (!ME.HasAuraById((int)Spells.SealofRighteousness)) { ActionBar.ExecuteSpell((int)Spells.SealofRighteousness); }
                 Logger.WriteLine("Rotation AOE!!");
             }
         }
@@ -317,7 +332,7 @@ namespace Anthrax
     [Serializable]
     public class Settings
     {
-        public int RefreshInquisition  = 4;
+        public int RefreshInquisition = 4;
         public int ForceRefreshInquisition = 1;
         public bool HasT164PB = true;
 
