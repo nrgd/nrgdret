@@ -130,7 +130,6 @@ namespace Anthrax
                 {
                     if (Spell.CanCast((int)Spells.Inquisition))
                     {
-                        Logger.WriteLine("Casting Inq");
                         ActionBar.ExecuteSpell((int)Spells.Inquisition);
                     }
                 }
