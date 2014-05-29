@@ -82,6 +82,7 @@ namespace Anthrax
             Inquisition = 84963,
             CrusaderStrike = 35395,
             Exorcism = 879,
+            MassExorcism = 122032,
             HolyShock = 20473,
             Judgement = 20271,
             AvengersShield = 31935,
@@ -130,6 +131,7 @@ namespace Anthrax
                 {
                     if (Spell.CanCast((int)Spells.Inquisition))
                     {
+                        Logger.WriteLine("Casting Inq");
                         ActionBar.ExecuteSpell((int)Spells.Inquisition);
                     }
                 }
@@ -149,6 +151,10 @@ namespace Anthrax
             if (Spell.CanCast((int)Spells.Exorcism))
             {
                 ActionBar.ExecuteSpell((int)Spells.Exorcism);
+            }
+            if (Spell.CanCast((int)Spells.MassExorcism))
+            {
+                ActionBar.ExecuteSpell((int)Spells.MassExorcism);
             }
             if (Spell.CanCast((int)Spells.CrusaderStrike))
             {
@@ -202,6 +208,10 @@ namespace Anthrax
             {
                 ActionBar.ExecuteSpell((int)Spells.Exorcism);
             }
+            if (Spell.CanCast((int)Spells.MassExorcism))
+            {
+                ActionBar.ExecuteSpell((int)Spells.MassExorcism);
+            }
             if (Spell.CanCast((int)Spells.HammeroftheRighteous))
             {
                 ActionBar.ExecuteSpell((int)Spells.HammeroftheRighteous);
@@ -252,9 +262,16 @@ namespace Anthrax
             SPQR.Logger.WriteLine("Elapsed:  " + stopwatch.ElapsedMilliseconds.ToString() + " miliseconds, average:" + (averageScanTimes.Sum() / averageScanTimes.Count()).ToString() + ",Max:" + averageScanTimes.Max());
             stopwatch.Restart();
              */
-            if (!Cooldown.IsGlobalCooldownActive && TARGET.IsValid)
+            if (ME.InCombat) 
             {
-                if (isAOE) { castNextSpellbyAOEPriority(TARGET); } else { castNextSpellbySinglePriority(TARGET); }
+                if (!Cooldown.IsGlobalCooldownActive && TARGET.IsValid)
+                {
+                    if (isAOE) { castNextSpellbyAOEPriority(TARGET); } else { castNextSpellbySinglePriority(TARGET); }
+                }
+            }
+            else
+            {
+
             }
             if ((GetAsyncKeyState(90) == -32767))
             {
