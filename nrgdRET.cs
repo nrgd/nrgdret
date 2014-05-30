@@ -114,10 +114,11 @@ namespace Anthrax
         private void castNextSpellbySinglePriority(WowUnit TARGET)
         {
             // Vars
-            int inqTimeLeft;
+            decimal inqTimeLeft;
             if (ME.HasAuraById((int)Spells.Inquisition))
             {
-                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft;
+                
+                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft/1000;
             }
             else
             {
@@ -131,7 +132,6 @@ namespace Anthrax
                 {
                     if (Spell.CanCast((int)Spells.Inquisition))
                     {
-                        Logger.WriteLine("Casting Inq");
                         ActionBar.ExecuteSpell((int)Spells.Inquisition);
                     }
                 }
@@ -175,10 +175,10 @@ namespace Anthrax
         private void castNextSpellbyAOEPriority(WowUnit TARGET)
         {
             // Vars
-            int inqTimeLeft;
+            decimal inqTimeLeft;
             if (ME.HasAuraById((int)Spells.Inquisition))
             {
-                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft;
+                inqTimeLeft = ME.Auras.Where(a => a.SpellId == (int)Spells.Inquisition).First().TimeLeft/1000;
             }
             else
             {
